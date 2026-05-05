@@ -32,15 +32,15 @@ const Hero = () => {
           </motion.a>
         </div>
 
-        {/* Three-column hero: VIDEO | Photo | EDITOR */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px_1fr] xl:grid-cols-[1fr_320px_1fr] gap-4 lg:gap-6 xl:gap-8 items-center relative">
+        {/* Three-column hero: VIDEO | Photo | EDITOR (responsive stacking) */}
+        <div className="flex flex-col lg:grid lg:grid-cols-[1fr_280px_1fr] xl:grid-cols-[1fr_320px_1fr] gap-6 lg:gap-8 items-center relative">
 
           {/* LEFT: PRATHAM SINGH + VIDEO */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-            className="flex flex-col text-center lg:text-left justify-center relative z-10"
+            className="flex flex-col text-center justify-center relative z-10 w-full"
           >
             <p className="text-[11px] font-bold tracking-[0.3em] uppercase text-gray-500 mb-2">
               Pratham Singh
@@ -53,12 +53,12 @@ const Hero = () => {
             </h1>
           </motion.div>
 
-          {/* CENTER: Floating Portrait card placeholder */}
+          {/* CENTER: Floating Portrait card placeholder - hidden on mobile */}
           <motion.div
             initial={{ opacity: 0, y: 30, scale: 0.92 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-            className="flex justify-center"
+            className="hidden lg:flex justify-center w-full"
           >
             {/* 
               This is an invisible placeholder. 
@@ -72,7 +72,7 @@ const Hero = () => {
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-            className="flex flex-col text-center lg:text-right justify-center items-center lg:items-end relative z-10"
+            className="flex flex-col text-center justify-center items-center relative z-10 w-full"
           >
             <h1
               className="font-black leading-[0.82] tracking-[-0.03em] text-white"
@@ -85,7 +85,7 @@ const Hero = () => {
               Crafting stories and engaging visuals that turn viewers into lifelong audiences.
             </p>
 
-            <div className="flex items-center gap-4 mt-8 md:mt-10">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8 md:mt-10">
               <a href="#showcase" className="btn-primary group">
                 <span className="relative z-10 flex items-center gap-2">
                   <Play size={16} className="fill-black" />

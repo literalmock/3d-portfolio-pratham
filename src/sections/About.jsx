@@ -12,7 +12,7 @@ const About = () => {
   return (
     <section id="about" className="w-full bg-[#0a0a0a] py-24 md:py-32 relative z-10">
       <div className="container-base">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center">
 
           {/* LEFT: Text & Stats */}
           <motion.div
@@ -22,17 +22,20 @@ const About = () => {
             viewport={viewportConfig}
             className="flex flex-col justify-center"
           >
-            <motion.p variants={staggerItem} className="tagline">
-              ◆ ABOUT ME
-            </motion.p>
-
             <motion.h2
               variants={staggerItem}
-              className="text-4xl md:text-5xl font-bold text-white mb-6 tracking-tight leading-tight"
+              className="text-5xl md:text-6xl lg:text-7xl font-black text-white mb-8 md:mb-10 tracking-tight leading-none uppercase"
+            >
+              About Me
+            </motion.h2>
+
+            <motion.h3
+              variants={staggerItem}
+              className="text-2xl md:text-3xl font-bold text-white mb-6 tracking-tight leading-tight"
             >
               Crafting Stories<br />
               <span className="text-[#A3FF3F]">Frame by Frame</span>
-            </motion.h2>
+            </motion.h3>
 
             <motion.div
               variants={staggerItem}

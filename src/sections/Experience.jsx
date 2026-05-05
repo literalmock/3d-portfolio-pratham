@@ -116,7 +116,7 @@ const Experience = () => {
         </motion.div>
 
         {/* Two-column: Testimonials left | Timeline right */}
-        <div className="grid grid-cols-1 xl:grid-cols-[1fr_1.2fr] gap-16 xl:gap-20 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-8 md:gap-12 lg:gap-16 xl:gap-20 items-start">
 
           {/* LEFT: Testimonial cards */}
           <motion.div

@@ -8,7 +8,7 @@ const Services = () => {
 
   return (
     <section id="services" className="section-padding bg-[#121212] overflow-hidden relative z-10">
-      <div className="container-base grid grid-cols-1 xl:grid-cols-2 gap-16 xl:gap-24 items-start">
+      <div className="container-base grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 xl:gap-24 items-start">
 
         {/* LEFT: text + accordion */}
         <motion.div

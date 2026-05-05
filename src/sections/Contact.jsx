@@ -86,7 +86,7 @@ const Contact = () => {
 
       {/* Form section */}
       <div className="section-padding">
-        <div className="container-base grid grid-cols-1 xl:grid-cols-2 gap-16 xl:gap-24 items-start">
+        <div className="container-base grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 xl:gap-24 items-start">
 
           {/* LEFT: Info */}
           <motion.div

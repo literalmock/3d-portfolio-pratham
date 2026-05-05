@@ -1,0 +1,124 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap");
+@import "tailwindcss";
+
+/* ─── CSS Custom Properties ─────────────────────────────────────────────── */
+:root, .dark {
+  --bg:          #0a0a0a;
+  --bg-card:     #111111;
+  --bg-muted:    #1a1a1a;
+  
+  --fg:          #ffffff;
+  --fg-muted:    #d1d5db;
+  --fg-subtle:   #9ca3af;
+  
+  --accent:      #A3FF3F;
+  
+  /* Border tokens (used in several components) */
+  --border:      rgba(255, 255, 255, 0.08);
+  --border-mid:  rgba(255, 255, 255, 0.12);
+  --border-high: rgba(255, 255, 255, 0.20);
+}
+
+/* ─── Base ──────────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  width: 100%;
+  overflow-x: hidden;
+  background-color: var(--bg);
+  color: var(--fg);
+  font-family: "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Typography & Spacing ─────────────────────────────────────────────────── */
+@layer components {
+  .container-base {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    width: 100%;
+  }
+
+  .section-padding { 
+    @apply py-24 md:py-32;
+  }
+
+  /* Headings */
+  .heading-lg {
+    @apply font-bold text-5xl md:text-6xl lg:text-8xl tracking-tight leading-tight text-white mb-6;
+  }
+
+  .heading-md {
+    @apply font-bold text-4xl md:text-5xl tracking-tight leading-tight text-white mb-6;
+  }
+
+  .heading-sm {
+    @apply font-semibold text-2xl tracking-tight leading-snug text-white mb-4;
+  }
+
+  .body-text {
+    @apply text-base md:text-lg leading-relaxed text-gray-300;
+  }
+
+  .tagline {
+    @apply inline-block text-sm font-semibold tracking-[0.2em] uppercase mb-4 text-gray-400;
+  }
+
+  /* ── Button System ── */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-semibold text-black transition-all duration-300;
+    background-color: var(--accent);
+    box-shadow: 0 4px 16px rgba(163, 255, 63, 0.15);
+  }
+  .btn-primary:hover {
+    transform: scale(1.04);
+    box-shadow: 0 8px 24px rgba(163, 255, 63, 0.3);
+  }
+  .btn-primary:active {
+    transform: scale(0.97);
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-semibold text-white transition-all duration-300 border border-white/20;
+    background-color: transparent;
+  }
+  .btn-secondary:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.35);
+  }
+  .btn-secondary:active {
+    transform: scale(0.97);
+  }
+}
+
+/* ─── Marquee animation ──────────────────────────────────────────────────── */
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-33.333%); }
+}
+
+/* ─── Modal backdrop ─────────────────────────────────────────────────────── */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+}

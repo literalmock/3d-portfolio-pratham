@@ -2,62 +2,127 @@ import { motion } from "framer-motion";
 import { staggerContainer, staggerItem, viewportConfig } from "../utils/animations";
 import { expCards, testimonials } from "../constants";
 
-// ── Testimonial Card (clean bordered, no blur) ────────────────────────────────
+// ── Testimonial Card ──────────────────────────────────────────────────────────
 const TestimonialCard = ({ t }) => (
   <motion.div
     variants={staggerItem}
-    className="p-6 rounded-2xl border border-white/10 bg-[#111111] hover:border-[#A3FF3F]/30 transition-all duration-300"
-    style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.3)" }}
-    whileHover={{ y: -4, transition: { type: "spring", stiffness: 280, damping: 22 } }}
+    style={{
+      padding: "24px",
+      borderRadius: "16px",
+      border: "1px solid rgba(255,255,255,0.08)",
+      background: "#111111",
+      boxShadow: "0 4px 24px rgba(0,0,0,0.3)",
+      transition: "border-color 0.3s ease",
+    }}
+    whileHover={{
+      borderColor: "rgba(163,255,63,0.28)",
+      y: -4,
+      transition: { type: "spring", stiffness: 280, damping: 22 },
+    }}
   >
     {/* Quote mark */}
     <div
-      className="text-5xl font-black leading-none mb-3 select-none"
-      style={{ fontFamily: "Georgia, serif", color: "#A3FF3F", opacity: 0.3 }}
+      style={{
+        fontFamily: "Georgia, serif",
+        fontSize: "3rem",
+        fontWeight: 900,
+        lineHeight: 1,
+        marginBottom: "12px",
+        color: "#A3FF3F",
+        opacity: 0.28,
+        userSelect: "none",
+      }}
     >
       "
     </div>
 
-    <p className="text-gray-300 text-sm leading-relaxed mb-5">
+    <p
+      style={{
+        color: "#d1d5db",
+        fontSize: "0.875rem",
+        lineHeight: 1.65,
+        marginBottom: "20px",
+      }}
+    >
       {t.review}
     </p>
 
-    <div className="flex items-center gap-3">
-      <div className="w-10 h-10 rounded-full overflow-hidden border border-white/15 flex-shrink-0 bg-[#1a1a1a]">
+    <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+      <div
+        style={{
+          width: "40px",
+          height: "40px",
+          borderRadius: "50%",
+          overflow: "hidden",
+          border: "1px solid rgba(255,255,255,0.14)",
+          flexShrink: 0,
+          background: "#1a1a1a",
+        }}
+      >
         <img
           src={t.imgPath}
           alt={t.name}
-          className="w-full h-full object-cover"
-          onError={(e) => {
-            e.target.style.display = "none";
-          }}
+          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          onError={(e) => { e.target.style.display = "none"; }}
         />
       </div>
-      <div className="flex-1 min-w-0">
-        <p className="font-bold text-sm text-white truncate">{t.name}</p>
-        <p className="text-xs text-gray-500 truncate">{t.mentions}</p>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <p
+          style={{
+            fontWeight: 700,
+            fontSize: "0.875rem",
+            color: "white",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {t.name}
+        </p>
+        <p
+          style={{
+            fontSize: "0.75rem",
+            color: "#6b7280",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {t.mentions}
+        </p>
       </div>
-      <div className="flex gap-0.5 flex-shrink-0">
+      <div style={{ display: "flex", gap: "2px", flexShrink: 0 }}>
         {[...Array(5)].map((_, i) => (
-          <span key={i} className="text-yellow-400 text-xs">★</span>
+          <span key={i} style={{ color: "#facc15", fontSize: "0.75rem" }}>★</span>
         ))}
       </div>
     </div>
   </motion.div>
 );
 
-// ── Timeline Entry ─────────────────────────────────────────────────────────────
+// ── Timeline Entry ────────────────────────────────────────────────────────────
 const TimelineEntry = ({ card, index, isLast }) => (
-  <motion.div variants={staggerItem} className="flex gap-5">
+  <motion.div variants={staggerItem} style={{ display: "flex", gap: "20px" }}>
     {/* Dot + line */}
-    <div className="flex flex-col items-center flex-shrink-0">
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flexShrink: 0 }}>
       <div
-        className="w-11 h-11 rounded-full flex items-center justify-center border-2 border-[#A3FF3F] bg-[#0a0a0a] overflow-hidden shadow-[0_0_16px_rgba(163,255,63,0.15)]"
+        style={{
+          width: "44px",
+          height: "44px",
+          borderRadius: "50%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          border: "2px solid #A3FF3F",
+          background: "#0a0a0a",
+          overflow: "hidden",
+          boxShadow: "0 0 16px rgba(163,255,63,0.14)",
+        }}
       >
         <img
           src={card.logoPath}
           alt=""
-          className="w-6 h-6 object-contain"
+          style={{ width: "24px", height: "24px", objectFit: "contain" }}
           onError={(e) => {
             e.target.style.display = "none";
             e.target.parentElement.innerHTML = `<span style="color:#A3FF3F;font-weight:900;font-size:14px">${index + 1}</span>`;
@@ -65,23 +130,71 @@ const TimelineEntry = ({ card, index, isLast }) => (
         />
       </div>
       {!isLast && (
-        <div className="flex-1 w-px mt-3 mb-0 min-h-[60px]" style={{ background: "linear-gradient(to bottom, rgba(163,255,63,0.3), rgba(255,255,255,0.05))" }} />
+        <div
+          style={{
+            flex: 1,
+            width: "1px",
+            marginTop: "12px",
+            background: "linear-gradient(to bottom, rgba(163,255,63,0.3), rgba(255,255,255,0.04))",
+            minHeight: "56px",
+          }}
+        />
       )}
     </div>
 
     {/* Content */}
-    <div className="pb-10 flex-1">
-      <h3 className="text-lg md:text-xl font-black uppercase tracking-tight text-white mb-1">
+    <div style={{ paddingBottom: "40px", flex: 1 }}>
+      <h3
+        style={{
+          fontSize: "clamp(1rem, 1.5vw, 1.2rem)",
+          fontWeight: 900,
+          textTransform: "uppercase",
+          letterSpacing: "-0.01em",
+          color: "white",
+          marginBottom: "6px",
+          lineHeight: 1.3,
+        }}
+      >
         {card.title}
       </h3>
-      <p className="text-xs font-semibold tracking-widest text-[#A3FF3F] mb-4 flex items-center gap-2">
+      <p
+        style={{
+          fontSize: "0.72rem",
+          fontWeight: 700,
+          letterSpacing: "0.1em",
+          color: "#A3FF3F",
+          marginBottom: "16px",
+          display: "flex",
+          alignItems: "center",
+          gap: "8px",
+        }}
+      >
         <span>📅</span>
         {card.date}
       </p>
-      <ul className="flex flex-col gap-2.5">
+      <ul style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
         {card.responsibilities.map((r, i) => (
-          <li key={i} className="flex items-start gap-3 text-sm leading-relaxed text-gray-300">
-            <span className="mt-2 w-1.5 h-1.5 rounded-full flex-shrink-0 bg-[#A3FF3F]" />
+          <li
+            key={i}
+            style={{
+              display: "flex",
+              alignItems: "flex-start",
+              gap: "12px",
+              fontSize: "0.875rem",
+              lineHeight: 1.6,
+              color: "#d1d5db",
+            }}
+          >
+            <span
+              style={{
+                marginTop: "8px",
+                width: "6px",
+                height: "6px",
+                borderRadius: "50%",
+                flexShrink: 0,
+                background: "#A3FF3F",
+              }}
+            />
             {r}
           </li>
         ))}
@@ -92,11 +205,14 @@ const TimelineEntry = ({ card, index, isLast }) => (
 
 // ── Main Section ──────────────────────────────────────────────────────────────
 const Experience = () => {
-  // Use first 3 testimonials for left column
   const featuredTestimonials = testimonials.slice(0, 3);
 
   return (
-    <section id="experience" className="section-padding bg-[#0a0a0a]">
+    <section
+      id="experience"
+      className="section-padding"
+      style={{ background: "#0a0a0a" }}
+    >
       <div className="container-base">
 
         {/* Section header */}
@@ -105,7 +221,7 @@ const Experience = () => {
           initial="hidden"
           whileInView="show"
           viewport={viewportConfig}
-          className="mb-16"
+          style={{ marginBottom: "64px" }}
         >
           <motion.p variants={staggerItem} className="tagline">
             ◆ CAREER
@@ -115,18 +231,33 @@ const Experience = () => {
           </motion.h2>
         </motion.div>
 
-        {/* Two-column: Testimonials left | Timeline right */}
-        <div className="grid grid-cols-1 xl:grid-cols-[1fr_1.2fr] gap-16 xl:gap-20 items-start">
-
+        {/* Two-column: testimonials | timeline */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1.15fr",
+            gap: "64px",
+            alignItems: "start",
+          }}
+        >
           {/* LEFT: Testimonial cards */}
           <motion.div
             variants={staggerContainer(0.12, 0)}
             initial="hidden"
             whileInView="show"
             viewport={viewportConfig}
-            className="flex flex-col gap-5"
+            style={{ display: "flex", flexDirection: "column", gap: "20px" }}
           >
-            <motion.p variants={staggerItem} className="text-xs font-semibold tracking-[0.2em] uppercase text-gray-500 mb-2">
+            <motion.p
+              variants={staggerItem}
+              style={{
+                fontSize: "0.68rem",
+                fontWeight: 700,
+                letterSpacing: "0.2em",
+                textTransform: "uppercase",
+                color: "#6b7280",
+              }}
+            >
               What clients say
             </motion.p>
             {featuredTestimonials.map((t) => (
@@ -141,7 +272,17 @@ const Experience = () => {
             whileInView="show"
             viewport={viewportConfig}
           >
-            <motion.p variants={staggerItem} className="text-xs font-semibold tracking-[0.2em] uppercase text-gray-500 mb-8">
+            <motion.p
+              variants={staggerItem}
+              style={{
+                fontSize: "0.68rem",
+                fontWeight: 700,
+                letterSpacing: "0.2em",
+                textTransform: "uppercase",
+                color: "#6b7280",
+                marginBottom: "32px",
+              }}
+            >
               Work history
             </motion.p>
             {expCards.map((card, i) => (
@@ -153,8 +294,8 @@ const Experience = () => {
               />
             ))}
           </motion.div>
-
         </div>
+
       </div>
     </section>
   );

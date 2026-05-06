@@ -1,0 +1,38 @@
+export const videoProjects = [
+  {
+    id: 1,
+    title: "Brand Video",
+    category: "Brand",
+    desc: "A premium brand film distilling identity, values, and vision into a 90-second cinematic statement — colour-graded for emotion, scored for impact.",
+    thumbnail: "/images/project1.png",
+    videoUrl: "",
+    tags: ["Brand", "Cinematic", "Colour Grade"],
+  },
+  {
+    id: 2,
+    title: "Summer Vibes Festival Campaign",
+    category: "Brand Video",
+    desc: "Created a cinematic campaign for the Summer Vibes Festival — shooting highlights, colour grading for a golden-hour aesthetic, and cutting to a bespoke music track.",
+    thumbnail: "/images/project2.png",
+    videoUrl: "",
+    tags: ["Colour Grading", "Motion Graphics", "Brand"],
+  },
+  {
+    id: 3,
+    title: "Cureskin Product Launch",
+    category: "Social Media",
+    desc: "Fast-paced product launch video with animated infographics, before-after sequences, and UGC integration designed for Instagram and YouTube.",
+    thumbnail: "/images/project3.png",
+    videoUrl: "",
+    tags: ["Social Media", "Animation", "Product"],
+  },
+  {
+    id: 4,
+    title: "NDTV Documentary Short",
+    category: "Documentary",
+    desc: "A 12-minute documentary short covering grassroots sports in India — hand-held cinematography, interview sync, and archival footage woven into a narrative arc.",
+    thumbnail: "/images/exp1.png",
+    videoUrl: "",
+    tags: ["Documentary", "Narrative", "News"],
+  },
+];

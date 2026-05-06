@@ -12,18 +12,27 @@ const brandNames = [
 ];
 
 const LogoItem = ({ brand }) => (
-  <div className="flex-none flex items-center px-6 py-2 opacity-40 hover:opacity-90 transition-opacity duration-300">
+  <div
+    style={{
+      flexShrink: 0,
+      display: "flex",
+      alignItems: "center",
+      padding: "0 28px",
+      opacity: 0.42,
+      transition: "opacity 0.3s ease",
+    }}
+    onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.9")}
+    onMouseLeave={(e) => (e.currentTarget.style.opacity = "0.42")}
+  >
     <img
       src={`/images/logos/${brand.name.toLowerCase()}.png`}
       alt={brand.name}
-      className="h-7 w-auto object-contain"
-      style={{ filter: "grayscale(100%) brightness(200%)" }}
+      style={{ height: "28px", width: "auto", objectFit: "contain", filter: "grayscale(100%) brightness(200%)" }}
       onError={(e) => {
-        // Fallback to text pill if logo image not found
         e.target.replaceWith(
           Object.assign(document.createElement("span"), {
             textContent: brand.name,
-            style: `font-size:14px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:${brand.color};opacity:1`,
+            style: `font-size:13px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:${brand.color};opacity:1`,
           })
         );
       }}
@@ -32,41 +41,73 @@ const LogoItem = ({ brand }) => (
 );
 
 const LogoShowcase = () => (
-  <div className="relative py-14 md:py-20 overflow-hidden" style={{ background: "#111111" }}>
-    {/* Border lines */}
-    <div className="absolute top-0 left-0 right-0 h-px bg-white/5" />
-    <div className="absolute bottom-0 left-0 right-0 h-px bg-white/5" />
+  // Full-width section — background goes edge-to-edge
+  <section
+    style={{
+      background: "#111111",
+      borderTop: "1px solid rgba(255,255,255,0.05)",
+      borderBottom: "1px solid rgba(255,255,255,0.05)",
+      padding: "56px 0",
+    }}
+  >
+    {/* Label — contained */}
+    <div className="container-base" style={{ marginBottom: "32px" }}>
+      <p
+        style={{
+          textAlign: "center",
+          fontSize: "0.68rem",
+          letterSpacing: "0.28em",
+          textTransform: "uppercase",
+          fontWeight: 700,
+          color: "#6b7280",
+        }}
+      >
+        Trusted by Brands &amp; Creators
+      </p>
+    </div>
 
-    {/* Label */}
-    <p className="text-center text-xs tracking-[0.3em] uppercase font-semibold mb-10 text-gray-500">
-      Trusted by Brands &amp; Creators
-    </p>
-
-    {/* Marquee wrapper — clips to section bounds */}
-    <div className="relative overflow-hidden">
-      {/* Left/right fade edges */}
-      <div className="absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
-        style={{ background: "linear-gradient(to right, #111111, transparent)" }} />
-      <div className="absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
-        style={{ background: "linear-gradient(to left, #111111, transparent)" }} />
+    {/* Marquee — full width with edge fades */}
+    <div style={{ position: "relative", overflow: "hidden" }}>
+      {/* Edge fades */}
+      <div
+        style={{
+          position: "absolute",
+          left: 0,
+          top: 0,
+          bottom: 0,
+          width: "96px",
+          zIndex: 1,
+          pointerEvents: "none",
+          background: "linear-gradient(to right, #111111, transparent)",
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          right: 0,
+          top: 0,
+          bottom: 0,
+          width: "96px",
+          zIndex: 1,
+          pointerEvents: "none",
+          background: "linear-gradient(to left, #111111, transparent)",
+        }}
+      />
 
       {/* Scrolling track */}
-      <div className="flex items-center" style={{ animation: "marquee 28s linear infinite" }}>
-        {/* First set */}
-        {brandNames.map((brand) => (
-          <LogoItem key={brand.name} brand={brand} />
-        ))}
-        {/* Duplicate for seamless loop */}
-        {brandNames.map((brand) => (
-          <LogoItem key={`dup-${brand.name}`} brand={brand} />
-        ))}
-        {/* Triple for wider screens */}
-        {brandNames.map((brand) => (
-          <LogoItem key={`trip-${brand.name}`} brand={brand} />
-        ))}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          animation: "marquee 28s linear infinite",
+        }}
+      >
+        {brandNames.map((brand) => <LogoItem key={brand.name} brand={brand} />)}
+        {brandNames.map((brand) => <LogoItem key={`dup-${brand.name}`} brand={brand} />)}
+        {brandNames.map((brand) => <LogoItem key={`tri-${brand.name}`} brand={brand} />)}
       </div>
     </div>
-  </div>
+  </section>
 );
 
 export default LogoShowcase;

@@ -1,36 +1,28 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap");
 @import "tailwindcss";
 
-/* ─── CSS Custom Properties ─────────────────────────────────────────────── */
-:root, .dark {
+/* ─── CSS Variables ─────────────────────────────────────────────────────── */
+:root {
   --bg:          #0a0a0a;
   --bg-card:     #111111;
   --bg-muted:    #1a1a1a;
-  
   --fg:          #ffffff;
   --fg-muted:    #d1d5db;
   --fg-subtle:   #9ca3af;
-  
   --accent:      #A3FF3F;
-  
-  /* Border tokens (used in several components) */
   --border:      rgba(255, 255, 255, 0.08);
   --border-mid:  rgba(255, 255, 255, 0.12);
   --border-high: rgba(255, 255, 255, 0.20);
 }
 
-/* ─── Base ──────────────────────────────────────────────────────────────── */
-*,
-*::before,
-*::after {
+/* ─── Reset ─────────────────────────────────────────────────────────────── */
+*, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
   width: 100%;
@@ -39,78 +31,134 @@ body {
   color: var(--fg);
   font-family: "Inter", sans-serif;
   -webkit-font-smoothing: antialiased;
+  font-size: 16px;
+  line-height: 1.6;
 }
 
-/* ─── Typography & Spacing ─────────────────────────────────────────────────── */
-@layer components {
-  .container-base {
-    max-width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-    width: 100%;
-  }
-
-  .section-padding { 
-    @apply py-24 md:py-32;
-  }
-
-  /* Headings */
-  .heading-lg {
-    @apply font-bold text-5xl md:text-6xl lg:text-8xl tracking-tight leading-tight text-white mb-6;
-  }
-
-  .heading-md {
-    @apply font-bold text-4xl md:text-5xl tracking-tight leading-tight text-white mb-6;
-  }
-
-  .heading-sm {
-    @apply font-semibold text-2xl tracking-tight leading-snug text-white mb-4;
-  }
-
-  .body-text {
-    @apply text-base md:text-lg leading-relaxed text-gray-300;
-  }
-
-  .tagline {
-    @apply inline-block text-sm font-semibold tracking-[0.2em] uppercase mb-4 text-gray-400;
-  }
-
-  /* ── Button System ── */
-  .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-semibold text-black transition-all duration-300;
-    background-color: var(--accent);
-    box-shadow: 0 4px 16px rgba(163, 255, 63, 0.15);
-  }
-  .btn-primary:hover {
-    transform: scale(1.04);
-    box-shadow: 0 8px 24px rgba(163, 255, 63, 0.3);
-  }
-  .btn-primary:active {
-    transform: scale(0.97);
-  }
-
-  .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-semibold text-white transition-all duration-300 border border-white/20;
-    background-color: transparent;
-  }
-  .btn-secondary:hover {
-    background-color: rgba(255, 255, 255, 0.06);
-    border-color: rgba(255, 255, 255, 0.35);
-  }
-  .btn-secondary:active {
-    transform: scale(0.97);
-  }
+/* ─── Layout — plain CSS, no @layer ────────────────────────────────────── */
+.container-base {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 24px;
+  padding-right: 24px;
+  width: 100%;
 }
 
-/* ─── Marquee animation ──────────────────────────────────────────────────── */
+.section-padding {
+  padding-top: 100px;
+  padding-bottom: 100px;
+}
+
+/* ─── Typography ────────────────────────────────────────────────────────── */
+.heading-hero {
+  font-weight: 900;
+  font-size: clamp(3.5rem, 7vw, 5rem);
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+  color: #fff;
+}
+
+.heading-lg {
+  font-weight: 900;
+  font-size: clamp(3.5rem, 7vw, 5rem);
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+  color: #fff;
+  margin-bottom: 0;
+}
+
+.heading-md {
+  font-weight: 800;
+  font-size: clamp(2.25rem, 4vw, 3rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: #fff;
+  margin-bottom: 24px;
+}
+
+.heading-sm {
+  font-weight: 700;
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  color: #fff;
+  margin-bottom: 16px;
+}
+
+.body-text {
+  font-size: clamp(1rem, 1.5vw, 1.125rem);
+  line-height: 1.65;
+  color: #d1d5db;
+  max-width: 600px;
+}
+
+.tagline {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  color: #9ca3af;
+}
+
+/* ─── Buttons ────────────────────────────────────────────────────────────── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 28px;
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #000;
+  background: linear-gradient(135deg, #A3FF3F, #7CFF00);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: 0 4px 20px rgba(163, 255, 63, 0.2);
+}
+.btn-primary:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 32px rgba(163, 255, 63, 0.38);
+}
+.btn-primary:active { transform: scale(0.97); }
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 28px;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: transparent;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.25s ease, border-color 0.25s ease, transform 0.2s ease;
+}
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: scale(1.03);
+}
+.btn-secondary:active { transform: scale(0.97); }
+
+/* ─── Marquee ────────────────────────────────────────────────────────────── */
 @keyframes marquee {
   0%   { transform: translateX(0); }
   100% { transform: translateX(-33.333%); }
 }
 
-/* ─── Modal backdrop ─────────────────────────────────────────────────────── */
+/* ─── Modal ──────────────────────────────────────────────────────────────── */
 .modal-backdrop {
   position: fixed;
   inset: 0;
@@ -121,4 +169,24 @@ body {
   padding: 1rem;
   background: rgba(0, 0, 0, 0.85);
   backdrop-filter: blur(8px);
+}
+
+/* ─── Responsive ─────────────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  #hero .container-base > div       { grid-template-columns: 1fr !important; gap: 32px !important; }
+  #services .container-base > div   { grid-template-columns: 1fr !important; gap: 40px !important; }
+  #about .container-base > div      { grid-template-columns: 1fr !important; gap: 40px !important; }
+  #experience .container-base > div:last-child { grid-template-columns: 1fr !important; gap: 40px !important; }
+  #contact .section-padding .container-base > div { grid-template-columns: 1fr !important; gap: 40px !important; }
+  #skills .container-base > div:last-child  { grid-template-columns: repeat(2, 1fr) !important; }
+}
+
+@media (max-width: 640px) {
+  .section-padding { padding-top: 72px; padding-bottom: 72px; }
+  .container-base  { padding-left: 16px; padding-right: 16px; }
+  .heading-lg      { font-size: 2.75rem; }
+  .heading-md      { font-size: 2rem; }
+  #work .container-base > div:nth-child(2)      { grid-template-columns: 1fr !important; }
+  #skills .container-base > div:last-child      { grid-template-columns: 1fr !important; }
+  #hero .container-base > div > div:last-child  { display: none !important; }
 }

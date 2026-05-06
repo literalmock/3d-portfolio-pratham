@@ -47,68 +47,133 @@ const tools = [
 ];
 
 const TechStack = () => (
-  <section id="skills" className="section-padding bg-[#121212]">
+  <section
+    id="skills"
+    className="section-padding"
+    style={{ background: "#121212" }}
+  >
     <div className="container-base">
+      {/* Section header */}
       <motion.div
         variants={staggerContainer(0.1, 0)}
         initial="hidden"
         whileInView="show"
         viewport={viewportConfig}
-        className="mb-14"
+        style={{ marginBottom: "48px" }}
       >
         <motion.p variants={staggerItem} className="tagline">
           ◆ TOOLKIT
         </motion.p>
         <motion.h2 variants={staggerItem} className="heading-md">
-          MY TOOLS &amp;<br />SKILLS
+          MY TOOLS &amp;
+          <br />
+          SKILLS
         </motion.h2>
-        <motion.p variants={staggerItem} className="body-text max-w-xl">
-          Industry-standard tools paired with a creative eye for storytelling and precision editing.
+        <motion.p variants={staggerItem} className="body-text">
+          Industry-standard tools paired with a creative eye for storytelling
+          and precision editing.
         </motion.p>
       </motion.div>
 
+      {/* 3-column tools grid */}
       <motion.div
         variants={staggerContainer(0.08, 0.1)}
         initial="hidden"
         whileInView="show"
         viewport={viewportConfig}
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(3, 1fr)",
+          gap: "24px",
+        }}
       >
         {tools.map((tool) => (
           <motion.div
             key={tool.name}
             variants={staggerItem}
-            className="group flex flex-col gap-4 p-5 rounded-2xl border border-white/10 bg-[#0f0f0f] transition-all duration-300"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "16px",
+              padding: "24px",
+              borderRadius: "16px",
+              border: "1px solid rgba(255,255,255,0.08)",
+              background: "#0f0f0f",
+              transition: "border-color 0.3s ease, transform 0.3s ease",
+            }}
             whileHover={{
-              borderColor: tool.color + "40",
-              y: -4,
+              borderColor: tool.color + "45",
+              y: -5,
               transition: { type: "spring", stiffness: 280, damping: 22 },
             }}
           >
-            {/* Icon + Name row */}
-            <div className="flex items-center gap-4">
+            {/* Icon + name row */}
+            <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
               <div
-                className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl flex-shrink-0"
-                style={{ background: tool.color + "15", border: `1px solid ${tool.color}30` }}
+                style={{
+                  width: "48px",
+                  height: "48px",
+                  borderRadius: "12px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: "1.4rem",
+                  flexShrink: 0,
+                  background: tool.color + "15",
+                  border: `1px solid ${tool.color}30`,
+                }}
               >
                 {tool.icon}
               </div>
               <div>
-                <h3 className="font-bold text-white text-sm">{tool.name}</h3>
-                <p className="text-gray-500 text-xs mt-0.5">{tool.desc}</p>
+                <h3
+                  style={{
+                    fontWeight: 700,
+                    color: "white",
+                    fontSize: "0.9rem",
+                    marginBottom: "4px",
+                  }}
+                >
+                  {tool.name}
+                </h3>
+                <p style={{ color: "#6b7280", fontSize: "0.78rem", lineHeight: 1.5 }}>
+                  {tool.desc}
+                </p>
               </div>
             </div>
 
-            {/* Skill bar */}
-            <div className="w-full">
-              <div className="flex items-center justify-between mb-1.5">
-                <span className="text-xs text-gray-500 font-medium">Proficiency</span>
-                <span className="text-xs font-bold" style={{ color: tool.color }}>{tool.level}%</span>
+            {/* Proficiency bar */}
+            <div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  marginBottom: "8px",
+                }}
+              >
+                <span style={{ fontSize: "0.72rem", color: "#6b7280", fontWeight: 600 }}>
+                  Proficiency
+                </span>
+                <span style={{ fontSize: "0.72rem", fontWeight: 700, color: tool.color }}>
+                  {tool.level}%
+                </span>
               </div>
-              <div className="w-full h-1.5 rounded-full bg-white/5 overflow-hidden">
+              <div
+                style={{
+                  width: "100%",
+                  height: "6px",
+                  borderRadius: "9999px",
+                  background: "rgba(255,255,255,0.05)",
+                  overflow: "hidden",
+                }}
+              >
                 <motion.div
-                  className="h-full rounded-full"
-                  style={{ background: `linear-gradient(90deg, ${tool.color}80, ${tool.color})` }}
+                  style={{
+                    height: "100%",
+                    borderRadius: "9999px",
+                    background: `linear-gradient(90deg, ${tool.color}80, ${tool.color})`,
+                  }}
                   initial={{ width: 0 }}
                   whileInView={{ width: `${tool.level}%` }}
                   viewport={{ once: true }}

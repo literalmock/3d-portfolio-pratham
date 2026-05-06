@@ -17,8 +17,8 @@ const Services = () => {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "1fr 300px",
-            gap: "64px",
+            gridTemplateColumns: "1fr 400px",
+            gap: "48px",
             alignItems: "start",
           }}
         >
@@ -150,17 +150,21 @@ const Services = () => {
               display: "flex",
               justifyContent: "center",
               alignItems: "flex-start",
+              paddingTop: "20px",
             }}
           >
             <div
               style={{
                 width: "100%",
-                maxWidth: "300px",
-                aspectRatio: "4/5",
+                maxWidth: "400px",
+                aspectRatio: "3/4",
                 position: "relative",
               }}
             >
-              <div id="services-card-placeholder" style={{ width: "100%", height: "100%" }} />
+              <div id="services-card-placeholder" className="desktop-only" style={{ width: "100%", height: "100%" }} />
+              <div className="mobile-only" style={{ width: "100%", height: "100%" }}>
+                <img src="/computer.jpeg" alt="Workspace" style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "16px", border: "1px solid rgba(255,255,255,0.1)", boxShadow: "0 10px 40px rgba(0,0,0,0.5)" }} />
+              </div>
             </div>
           </div>
         </div>

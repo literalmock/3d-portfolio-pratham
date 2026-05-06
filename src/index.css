@@ -3,26 +3,30 @@
 
 /* ─── CSS Variables ─────────────────────────────────────────────────────── */
 :root {
-  --bg:          #0a0a0a;
-  --bg-card:     #111111;
-  --bg-muted:    #1a1a1a;
-  --fg:          #ffffff;
-  --fg-muted:    #d1d5db;
-  --fg-subtle:   #9ca3af;
-  --accent:      #A3FF3F;
-  --border:      rgba(255, 255, 255, 0.08);
-  --border-mid:  rgba(255, 255, 255, 0.12);
+  --bg: #0a0a0a;
+  --bg-card: #111111;
+  --bg-muted: #1a1a1a;
+  --fg: #ffffff;
+  --fg-muted: #d1d5db;
+  --fg-subtle: #9ca3af;
+  --accent: #A3FF3F;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-mid: rgba(255, 255, 255, 0.12);
   --border-high: rgba(255, 255, 255, 0.20);
 }
 
 /* ─── Reset ─────────────────────────────────────────────────────────────── */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+}
 
 body {
   width: 100%;
@@ -48,6 +52,35 @@ body {
 .section-padding {
   padding-top: 100px;
   padding-bottom: 100px;
+}
+
+/* ── Scroll offset for fixed navbar (scrollIntoView lands here) ── */
+#hero {
+  scroll-margin-top: 50px;
+}
+
+#services {
+  scroll-margin-top: -50px;
+}
+
+#about {
+  scroll-margin-top: -50px;
+}
+
+#work {
+  scroll-margin-top: -50px;
+}
+
+#experience {
+  scroll-margin-top: -50px;
+}
+
+#skills {
+  scroll-margin-top: 50px;
+}
+
+#contact {
+  scroll-margin-top: 50px;
 }
 
 /* ─── Typography ────────────────────────────────────────────────────────── */
@@ -121,6 +154,7 @@ body {
   box-sizing: border-box;
   line-height: 1.4;
 }
+
 .btn-nav:hover {
   background: #A3FF3F;
 }
@@ -143,11 +177,15 @@ body {
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   box-shadow: 0 4px 20px rgba(163, 255, 63, 0.2);
 }
+
 .btn-primary:hover {
   transform: scale(1.05);
   box-shadow: 0 8px 32px rgba(163, 255, 63, 0.38);
 }
-.btn-primary:active { transform: scale(0.97); }
+
+.btn-primary:active {
+  transform: scale(0.97);
+}
 
 .btn-secondary {
   display: inline-flex;
@@ -166,17 +204,26 @@ body {
   white-space: nowrap;
   transition: background 0.25s ease, border-color 0.25s ease, transform 0.2s ease;
 }
+
 .btn-secondary:hover {
   background: rgba(255, 255, 255, 0.07);
   border-color: rgba(255, 255, 255, 0.4);
   transform: scale(1.03);
 }
-.btn-secondary:active { transform: scale(0.97); }
+
+.btn-secondary:active {
+  transform: scale(0.97);
+}
 
 /* ─── Marquee ────────────────────────────────────────────────────────────── */
 @keyframes marquee {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-33.333%); }
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-33.333%);
+  }
 }
 
 /* ─── Modal ──────────────────────────────────────────────────────────────── */
@@ -194,20 +241,113 @@ body {
 
 /* ─── Responsive ─────────────────────────────────────────────────────────── */
 @media (max-width: 1024px) {
-  #hero .container-base > div       { grid-template-columns: 1fr !important; gap: 32px !important; }
-  #services .container-base > div   { grid-template-columns: 1fr !important; gap: 40px !important; }
-  #about .container-base > div      { grid-template-columns: 1fr !important; gap: 40px !important; }
-  #experience .container-base > div:last-child { grid-template-columns: 1fr !important; gap: 40px !important; }
-  #contact .section-padding .container-base > div { grid-template-columns: 1fr !important; gap: 40px !important; }
-  #skills .container-base > div:last-child  { grid-template-columns: repeat(2, 1fr) !important; }
+
+  /* Hero layout: Stack text columns together first, then the image */
+  #hero .container-base>div {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+  }
+
+  #hero .container-base>div>div:nth-child(1) {
+    order: 1;
+    align-items: center !important;
+    text-align: center !important;
+  }
+
+  #hero .container-base>div>div:nth-child(3) {
+    order: 2;
+    align-items: center !important;
+    text-align: center !important;
+  }
+
+  #hero .container-base>div>div:nth-child(3) p {
+    text-align: center !important;
+  }
+
+  #hero .container-base>div>div:nth-child(3) div {
+    justify-content: center !important;
+  }
+
+  #hero .container-base>div>div:nth-child(2) {
+    order: 3;
+    margin-top: 16px;
+    width: 100% !important;
+  }
+
+  #services .container-base>div {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+  }
+
+  #about .container-base>div {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+  }
+
+  #experience .container-base>div:last-child {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+  }
+
+  .experience-grid {
+    grid-template-columns: 1fr !important;
+    gap: 48px !important;
+  }
+
+  #contact .section-padding .container-base>div {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+  }
+
+  #skills .container-base>div:last-child {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
 }
 
 @media (max-width: 640px) {
-  .section-padding { padding-top: 72px; padding-bottom: 72px; }
-  .container-base  { padding-left: 16px; padding-right: 16px; }
-  .heading-lg      { font-size: 2.75rem; }
-  .heading-md      { font-size: 2rem; }
-  #work .container-base > div:nth-child(2)      { grid-template-columns: 1fr !important; }
-  #skills .container-base > div:last-child      { grid-template-columns: 1fr !important; }
-  #hero .container-base > div > div:last-child  { display: none !important; }
+  .section-padding {
+    padding-top: 72px;
+    padding-bottom: 72px;
+  }
+
+  .container-base {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .heading-lg {
+    font-size: 2.75rem;
+  }
+
+  .heading-md {
+    font-size: 2rem;
+  }
+
+  #work .container-base>div:nth-child(2) {
+    grid-template-columns: 1fr !important;
+  }
+
+  #skills .container-base>div:last-child {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ─── Responsive Visibility ────────────────────────────────────────────────── */
+.mobile-only {
+  display: none !important;
+}
+
+.desktop-only {
+  display: block !important;
+}
+
+@media (max-width: 1024px) {
+  .mobile-only {
+    display: block !important;
+  }
+
+  .desktop-only {
+    display: none !important;
+  }
 }

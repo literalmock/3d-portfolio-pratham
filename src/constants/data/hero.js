@@ -4,7 +4,7 @@ export const heroContent = {
   rightTitle: "EDITOR",
   description:
     "Crafting stories and engaging visuals that turn viewers into lifelong audiences.",
-  primaryCta: { label: "See My Work", href: "#showcase" },
+  primaryCta: { label: "See My Work", href: "#work" },
   secondaryCta: { label: "Contact", href: "#contact" },
   availability: "Available",
   talkCta: { label: "Let's Talk", href: "#contact" },

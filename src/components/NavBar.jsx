@@ -1,6 +1,14 @@
 import { useState, useEffect } from "react";
 import { navLinks } from "../constants";
 
+// Smooth scroll to a section by ID.
+// Offset is handled via CSS scroll-margin-top on each section.
+const scrollToSection = (id) => {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.scrollIntoView({ behavior: "smooth", block: "start" });
+};
+
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -36,6 +44,10 @@ const Navbar = () => {
             <a
               key={link.id}
               href={`#${link.id}`}
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection(link.id);
+              }}
               className="px-3.5 py-1.5 text-[13px] font-medium text-gray-300 hover:text-white rounded-full hover:bg-white/8 transition-all duration-200 whitespace-nowrap"
               style={{ marginLeft: index > 0 ? "16px" : "0" }}
             >
@@ -80,7 +92,11 @@ const Navbar = () => {
             <a
               key={link.id}
               href={`#${link.id}`}
-              onClick={() => setIsOpen(false)}
+              onClick={(e) => {
+                e.preventDefault();
+                setIsOpen(false);
+                scrollToSection(link.id);
+              }}
               className="w-full text-center px-4 py-3 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/6 rounded-xl transition-colors"
             >
               {link.title}

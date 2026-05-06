@@ -2,7 +2,50 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { staggerContainer, staggerItem, viewportConfig } from "../utils/animations";
 import { aboutStats } from "../constants";
+import { useCountUp } from "../hooks/useCountUp";
 
+// ─── Stat values mapped to numeric targets ────────────────────────────────────
+const statMeta = [
+  { target: 7, suffix: "+", label: "Years Experience", delay: 0 },
+  { target: 100, suffix: "+", label: "Projects", delay: 200 },
+  { target: 50, suffix: "+", label: "Clients", delay: 400 },
+];
+
+// ─── Single animated stat ────────────────────────────────────────────────────
+const AnimatedStat = ({ target, suffix, label, delay }) => {
+  const { count, ref } = useCountUp(target, 1800, delay);
+
+  return (
+    <div ref={ref} style={{ display: "flex", flexDirection: "column" }}>
+      <span
+        style={{
+          fontSize: "clamp(1.75rem, 3vw, 2.5rem)",
+          fontWeight: 900,
+          color: "#A3FF3F",
+          lineHeight: 1,
+          marginBottom: "6px",
+          fontVariantNumeric: "tabular-nums",
+          letterSpacing: "-0.02em",
+        }}
+      >
+        {count}{suffix}
+      </span>
+      <span
+        style={{
+          fontSize: "0.68rem",
+          fontWeight: 700,
+          color: "#6b7280",
+          textTransform: "uppercase",
+          letterSpacing: "0.12em",
+        }}
+      >
+        {label}
+      </span>
+    </div>
+  );
+};
+
+// ─── Section ─────────────────────────────────────────────────────────────────
 const About = () => {
   return (
     <section
@@ -57,7 +100,7 @@ const About = () => {
               </p>
             </motion.div>
 
-            {/* Stats row */}
+            {/* Stats row — animated counters */}
             <motion.div
               variants={staggerItem}
               style={{
@@ -70,31 +113,8 @@ const About = () => {
                 borderBottom: "1px solid rgba(255,255,255,0.08)",
               }}
             >
-              {aboutStats.map(({ value, label }) => (
-                <div key={label} style={{ display: "flex", flexDirection: "column" }}>
-                  <span
-                    style={{
-                      fontSize: "clamp(1.75rem, 3vw, 2.5rem)",
-                      fontWeight: 900,
-                      color: "#A3FF3F",
-                      lineHeight: 1,
-                      marginBottom: "6px",
-                    }}
-                  >
-                    {value}
-                  </span>
-                  <span
-                    style={{
-                      fontSize: "0.68rem",
-                      fontWeight: 700,
-                      color: "#6b7280",
-                      textTransform: "uppercase",
-                      letterSpacing: "0.12em",
-                    }}
-                  >
-                    {label}
-                  </span>
-                </div>
+              {statMeta.map((s) => (
+                <AnimatedStat key={s.label} {...s} />
               ))}
             </motion.div>
 
@@ -103,8 +123,12 @@ const About = () => {
               variants={staggerItem}
               style={{ display: "flex", alignItems: "center", gap: "24px", flexWrap: "wrap" }}
             >
-              <a href="#contact" className="btn-secondary" style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}>
-                My Story
+              <a
+                href="#contact"
+                className="btn-secondary"
+                style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}
+              >
+                Let's Collaborate
                 <ArrowRight size={14} />
               </a>
               <div style={{ fontSize: "0.875rem", color: "#9ca3af", display: "flex", flexDirection: "column", gap: "6px" }}>
@@ -134,12 +158,6 @@ const About = () => {
             </motion.div>
           </motion.div>
 
-          {/* RIGHT: floating card placeholder */}
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-            <div style={{ width: "100%", maxWidth: "300px", aspectRatio: "4/5", position: "relative" }}>
-              <div id="about-card-placeholder" style={{ width: "100%", height: "100%" }} />
-            </div>
-          </div>
         </div>
       </div>
     </section>

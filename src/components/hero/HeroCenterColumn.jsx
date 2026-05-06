@@ -14,11 +14,15 @@ const HeroCenterColumn = ({ availability, talkCta }) => {
         width: "100%",
       }}
     >
-      {/* Image placeholder — FloatingCard fills this */}
+      {/* Image placeholder — FloatingCard fills this on desktop */}
       <div
         id="hero-card-placeholder"
+        className="desktop-only"
         style={{ width: "100%", aspectRatio: "3/4" }}
       />
+      <div className="mobile-only" style={{ width: "100%", aspectRatio: "3/4", marginBottom: "32px" }}>
+        <img src="https://framerusercontent.com/images/ZOsXBqudWl7eZUxADVkX74xgU.png" alt="Pratham" style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "16px", border: "1px solid rgba(255,255,255,0.1)", boxShadow: "0 10px 40px rgba(0,0,0,0.5)" }} />
+      </div>
 
       <HeroAvailability
         label={availability}

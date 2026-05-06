@@ -1,157 +1,152 @@
 import { useEffect, useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 
+/**
+ * FloatingCard — scroll-driven card: Hero (portrait) → Services (flips to workspace).
+ * Stays at Services position after the flip. No further movement to About.
+ *
+ * Fix for back face visibility:
+ *  • Card shell does NOT use overflow:hidden (that clips the back face)
+ *  • backfaceVisibility is set per-face, not on the shell
+ *  • Front: rotateY(0), backfaceVisibility hidden
+ *  • Back:  rotateY(180deg), backfaceVisibility hidden
+ *  • Shell rotates via rotateY and preserve-3d exposes the right face
+ */
 const FloatingCard = () => {
   const { scrollY } = useScroll();
   const [isMeasured, setIsMeasured] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // ── Mobile detection ───────────────────────────────────────────────────────
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 1024);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  // ── Placeholder rects (hero + services only) ───────────────────────────────
   const [rects, setRects] = useState({
-    hero: { x: 0, y: 0, width: 0, height: 0 },
+    hero:     { x: 0, y: 0, width: 0, height: 0 },
     services: { x: 0, y: 0, width: 0, height: 0 },
-    about: { x: 0, y: 0, width: 0, height: 0 },
   });
 
   const [scrollPoints, setScrollPoints] = useState({
     hero: 0,
     services: 0,
-    about: 0,
   });
 
-  // Measure placeholders on mount and resize
   useEffect(() => {
     const updateRects = () => {
-      const heroEl = document.getElementById("hero-card-placeholder");
+      const heroEl     = document.getElementById("hero-card-placeholder");
       const servicesEl = document.getElementById("services-card-placeholder");
-      const aboutEl = document.getElementById("about-card-placeholder");
 
-      if (heroEl && servicesEl && aboutEl) {
-        // Get coordinates relative to the document (including scroll)
-        const getRect = (el) => {
-          const rect = el.getBoundingClientRect();
-          return {
-            x: rect.left,
-            y: rect.top + window.scrollY,
-            width: rect.width,
-            height: rect.height,
-          };
-        };
+      if (!heroEl || !servicesEl) return;
 
-        const heroRect = getRect(heroEl);
-        const servicesRect = getRect(servicesEl);
-        const aboutRect = getRect(aboutEl);
+      const getRect = (el) => {
+        const r = el.getBoundingClientRect();
+        return { x: r.left, y: r.top + window.scrollY, width: r.width, height: r.height };
+      };
 
-        setRects({
-          hero: heroRect,
-          services: servicesRect,
-          about: aboutRect,
-        });
+      const heroRect     = getRect(heroEl);
+      const servicesRect = getRect(servicesEl);
 
-        // Determine at what scrollY values the transitions should start/end
-        // We transition when the element's top edge is around the center of the screen
-        const offset = window.innerHeight / 3;
-        setScrollPoints({
-          hero: 0, // Starts at top
-          services: Math.max(0, servicesRect.y - offset),
-          about: Math.max(0, aboutRect.y - offset),
-        });
-        setIsMeasured(true);
-      }
+      setRects({ hero: heroRect, services: servicesRect });
+
+      const offset = window.innerHeight / 3;
+      setScrollPoints({
+        hero:     0,
+        services: Math.max(0, servicesRect.y - offset),
+      });
+      setIsMeasured(true);
     };
 
     updateRects();
-    // Use a small timeout to ensure DOM is fully laid out
-    const timeout = setTimeout(updateRects, 100);
+    const t = setTimeout(updateRects, 120);
     window.addEventListener("resize", updateRects);
-
-    return () => {
-      clearTimeout(timeout);
-      window.removeEventListener("resize", updateRects);
-    };
+    return () => { clearTimeout(t); window.removeEventListener("resize", updateRects); };
   }, []);
 
-  // Map scrollY to coordinates
-  const y = useTransform(
+  // ── Raw position / size motion values ─────────────────────────────────────
+  const rawY = useTransform(
     scrollY,
-    [0, scrollPoints.services, scrollPoints.about],
-    [rects.hero.y, rects.services.y, rects.about.y]
+    [0, scrollPoints.services],
+    [rects.hero.y, rects.services.y]
+  );
+  const rawX = useTransform(
+    scrollY,
+    [0, scrollPoints.services],
+    [rects.hero.x, rects.services.x]
+  );
+  const rawW = useTransform(
+    scrollY,
+    [0, scrollPoints.services],
+    [rects.hero.width, rects.services.width]
+  );
+  const rawH = useTransform(
+    scrollY,
+    [0, scrollPoints.services],
+    [rects.hero.height, rects.services.height]
   );
 
-  const x = useTransform(
+  // Flip: 0 → -180  (front shows → back shows)
+  const rawRotateY = useTransform(
     scrollY,
-    [0, scrollPoints.services, scrollPoints.about],
-    [rects.hero.x, rects.services.x, rects.about.x]
+    [0, scrollPoints.services],
+    [0, -180]
   );
 
-  const width = useTransform(
+  // Subtle isometric tilt
+  const rawRotateX = useTransform(
     scrollY,
-    [0, scrollPoints.services, scrollPoints.about],
-    [rects.hero.width, rects.services.width, rects.about.width]
+    [0, scrollPoints.services],
+    [0, 4]
+  );
+  const rawRotateZ = useTransform(
+    scrollY,
+    [0, scrollPoints.services],
+    [0, -1.5]
   );
 
-  const height = useTransform(
-    scrollY,
-    [0, scrollPoints.services, scrollPoints.about],
-    [rects.hero.height, rects.services.height, rects.about.height]
-  );
+  // ── Spring smoothing ──────────────────────────────────────────────────────
+  const springCfg = { stiffness: 80, damping: 15, mass: 0.8 };
 
-  // 3D rotations for the "flip"
-  // Starts straight (0) -> flips to (-180) at services -> flips to (-360) at about
-  const rotateY = useTransform(
-    scrollY,
-    [0, scrollPoints.services, scrollPoints.about],
-    [0, -180, -360]
-  );
+  const y       = useSpring(rawY,       springCfg);
+  const x       = useSpring(rawX,       springCfg);
+  const width   = useSpring(rawW,       springCfg);
+  const height  = useSpring(rawH,       springCfg);
+  const rotateY = useSpring(rawRotateY, springCfg);
+  const rotateX = useSpring(rawRotateX, springCfg);
+  const rotateZ = useSpring(rawRotateZ, springCfg);
 
-  // Isometric tilts
-  // Hero: straight (0)
-  // Services: slightly tilted (-10deg X, 5deg Z) - wait, user requested smaller ratio/tilt
-  // About: tilted (-15deg Y, 5deg X, -5deg Z)
-  const rotateX = useTransform(
-    scrollY,
-    [0, scrollPoints.services, scrollPoints.about],
-    [0, 5, 5]
-  );
+  // ── Snap to hero position instantly on first measurement ──────────────────
+  // Springs start at 0 because FloatingCard mounts before sections exist in
+  // the DOM. Without this snap, the card drifts slowly from (0,0) to the hero
+  // placeholder — making it invisible on initial load.
+  useEffect(() => {
+    if (!isMeasured) return;
+    y.set(rects.hero.y);
+    x.set(rects.hero.x);
+    width.set(rects.hero.width);
+    height.set(rects.hero.height);
+    rotateY.set(0);
+    rotateX.set(0);
+    rotateZ.set(0);
+  }, [isMeasured]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const rotateZ = useTransform(
-    scrollY,
-    [0, scrollPoints.services, scrollPoints.about],
-    [0, -2, -5]
-  );
+  // ── Guards ────────────────────────────────────────────────────────────────
+  if (isMobile) return null;
 
-  // Image source opacity fading during flips
-  // Snapping exactly at the 90deg and 270deg points to prevent "ghosting"
-  const flip1 = scrollPoints.services / 2;
-  const flip2 = scrollPoints.services + (scrollPoints.about - scrollPoints.services) / 2;
+  const faceBase = {
+    position: "absolute",
+    inset: 0,
+    width: "100%",
+    height: "100%",
+    borderRadius: "16px",
+    backfaceVisibility: "hidden",
+    WebkitBackfaceVisibility: "hidden",
+  };
 
-  const frontImageOpacity = useTransform(
-    scrollY,
-    [
-      0,
-      flip1 - 1, // Stay opaque until precisely 90deg
-      flip1 + 1, // Hide exactly after 90deg
-      flip2 - 1, // Stay hidden until precisely 270deg
-      flip2 + 1, // Show exactly after 270deg
-      scrollPoints.about,
-    ],
-    [1, 1, 0, 0, 1, 1] 
-  );
-
-  const backImageOpacity = useTransform(
-    scrollY,
-    [
-      0,
-      flip1 - 1, // Stay hidden until precisely 90deg
-      flip1 + 1, // Show exactly after 90deg
-      flip2 - 1, // Stay visible until precisely 270deg
-      flip2 + 1, // Hide exactly after 270deg
-      scrollPoints.about,
-    ],
-    [0, 0, 1, 1, 0, 0] 
-  );
-
-  if (!rects.hero) return null; // Wait for measurements before rendering the DOM
-
-  // To prevent the card from overlapping normal scrolling text, we will set its position to absolute
-  // and manually translate it across the entire document length.
   return (
     <motion.div
       style={{
@@ -166,39 +161,84 @@ const FloatingCard = () => {
         rotateX,
         rotateZ,
         zIndex: 50,
-        opacity: isMeasured ? 1 : 0,
         transformStyle: "preserve-3d",
+        perspective: 1200,
+        willChange: "transform",
+        opacity: isMeasured ? 1 : 0,
+        transition: "opacity 0.3s ease",
       }}
-      className="perspective-1000"
     >
-      <div className="w-full h-full relative rounded-2xl shadow-2xl border border-white/10" style={{ transformStyle: "preserve-3d" }}>
-        
-        {/* Front Face: Portrait (Shows in Hero and About) */}
-        <motion.img
-          src="https://framerusercontent.com/images/ZOsXBqudWl7eZUxADVkX74xgU.png"
-          alt="Pratham Portrait"
-          style={{ 
-            opacity: frontImageOpacity,
+      {/* Card shell — preserve-3d so both faces render correctly */}
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          position: "relative",
+          borderRadius: "16px",
+          boxShadow: "0 20px 60px rgba(0,0,0,0.5)",
+          border: "1px solid rgba(255,255,255,0.08)",
+          transformStyle: "preserve-3d",
+          // NO overflow:hidden here — it clips the back face
+        }}
+      >
+        {/* ── Front face: Portrait ────────────────────────────────────────── */}
+        <div
+          style={{
+            ...faceBase,
+            overflow: "hidden",
+            // rotateY(0) — faces the viewer normally
           }}
-          className="absolute inset-0 w-full h-full object-cover object-center rounded-2xl"
-        />
-
-        {/* Back Face: Workspace (Shows in Services) */}
-        <motion.div
-          style={{ 
-            opacity: backImageOpacity,
-            rotateY: 180, // Counter-rotate the image so it's not backwards when the card is flipped 180!
-          }}
-          className="absolute inset-0 w-full h-full bg-[#121212] rounded-2xl overflow-hidden"
         >
           <img
-            src="/computer.webp"
-            alt="Workspace"
-            className="w-full h-full object-cover object-center"
+            src="https://framerusercontent.com/images/ZOsXBqudWl7eZUxADVkX74xgU.png"
+            alt="Pratham Portrait"
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              objectPosition: "center",
+            }}
           />
-        </motion.div>
+          {/* Gloss */}
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              background: "linear-gradient(135deg, rgba(255,255,255,0.07) 0%, transparent 55%, rgba(0,0,0,0.25) 100%)",
+              pointerEvents: "none",
+            }}
+          />
+        </div>
 
-        <div className="absolute inset-0 bg-gradient-to-tr from-black/40 via-transparent to-white/10 pointer-events-none rounded-2xl" />
+        {/* ── Back face: Workspace ────────────────────────────────────────── */}
+        <div
+          style={{
+            ...faceBase,
+            overflow: "hidden",
+            transform: "rotateY(180deg)",
+            background: "#121212",
+          }}
+        >
+          <img
+            src="/computer.jpeg"
+            alt="Workspace"
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              objectPosition: "center",
+            }}
+          />
+          {/* Gloss */}
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              background: "linear-gradient(135deg, rgba(255,255,255,0.07) 0%, transparent 55%, rgba(0,0,0,0.25) 100%)",
+              pointerEvents: "none",
+            }}
+          />
+        </div>
       </div>
     </motion.div>
   );

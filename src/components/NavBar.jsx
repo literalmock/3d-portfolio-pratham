@@ -50,7 +50,7 @@ const Navbar = () => {
         {/* Contact CTA pill */}
         <a
           href="#contact"
-          className="hidden md:inline-flex items-center px-4 py-1.5 rounded-full text-[13px] font-semibold bg-white text-black hover:bg-[#A3FF3F] transition-colors duration-200 whitespace-nowrap"
+          className="hidden md:inline-flex btn-nav"
         >
           Contact
         </a>

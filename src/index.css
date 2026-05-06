@@ -104,6 +104,27 @@ body {
 }
 
 /* ─── Buttons ────────────────────────────────────────────────────────────── */
+.btn-nav {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 14px;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 13px;
+  color: #000;
+  background: #fff;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+  text-decoration: none;
+  box-sizing: border-box;
+  line-height: 1.4;
+}
+.btn-nav:hover {
+  background: #A3FF3F;
+}
+
 .btn-primary {
   display: inline-flex;
   align-items: center;

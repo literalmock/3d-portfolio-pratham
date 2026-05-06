@@ -103,30 +103,6 @@ const Services = () => {
 
                       {/* Toggle indicator */}
                       <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                        {isOpen && (
-                          <div
-                            style={{
-                              width: "44px",
-                              height: "24px",
-                              borderRadius: "9999px",
-                              background: "var(--accent)",
-                              display: "flex",
-                              alignItems: "center",
-                              padding: "4px",
-                              boxShadow: "0 0 14px rgba(163,255,63,0.3)",
-                            }}
-                          >
-                            <div
-                              style={{
-                                width: "16px",
-                                height: "16px",
-                                borderRadius: "50%",
-                                background: "black",
-                                marginLeft: "auto",
-                              }}
-                            />
-                          </div>
-                        )}
                         <span
                           style={{
                             fontSize: "1.25rem",

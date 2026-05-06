@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { ThemeProvider } from "./context/ThemeContext";
 import CustomCursor from "./components/CustomCursor";
 import Loader from "./components/Loader";
 import Navbar from "./components/NavBar";
@@ -18,7 +17,7 @@ const App = () => {
   const [loaded, setLoaded] = useState(false);
 
   return (
-    <ThemeProvider>
+    <>
       <CustomCursor />
       {!loaded && <Loader onComplete={() => setLoaded(true)} />}
       {loaded && (
@@ -36,7 +35,7 @@ const App = () => {
           <Footer />
         </div>
       )}
-    </ThemeProvider>
+    </>
   );
 };
 

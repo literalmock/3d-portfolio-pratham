@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { staggerContainer, staggerItem, viewportConfig } from "../utils/animations";
-import { aboutStats } from "../constants";
 import { useCountUp } from "../hooks/useCountUp";
 
 // ─── Stat values mapped to numeric targets ────────────────────────────────────
